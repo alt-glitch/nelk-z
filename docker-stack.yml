@@ -26,6 +26,7 @@ services:
 
   logstash:
     image: docker.elastic.co/logstash/logstash:7.15.0
+    # command: --config.reload.automatic
     ports:
       - "5044:5044"
       - "5000:5000"
