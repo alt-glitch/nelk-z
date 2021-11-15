@@ -1,0 +1,37 @@
+input {
+	file {
+		path => "/home/glitch/FireCompass/Research/netz-elk/netz-logs/zgrab2-35.232.35.0-postgres.json"
+		start_position => "beginning"
+		sincedb_path => "/dev/null"
+		# codec => json
+  }
+}
+
+# filter {
+#   grok {
+#     match => { "message" => "%{COMBINEDAPACHELOG}" }
+#   }
+#   date {
+#     match => [ "timestamp" , "dd/MMM/yyyy:HH:mm:ss Z" ]
+#   }
+# }
+
+filter {
+	json {
+		source => "message"
+	}
+	split {
+		field => "[pastEvents]"
+	}
+	mutate {
+		add_field => {
+			"eventId" => "%{[pastEvents][eventId]}"
+			"transactionId" => "%{[pastEvents][transactionId]}"
+		}
+		remove_field => ["message", "@timestamp", "@version", "pastEvents"]
+	}
+}
+
+output {
+      stdout { codec => json }
+}
