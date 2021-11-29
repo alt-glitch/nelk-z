@@ -1,0 +1,7 @@
+filebeat.inputs:
+- type: log
+  paths:
+    # - /tmp/netz2/*.json
+    - /home/glitch/FireCompass/Research/netz-elk/netz-logs/elk-*.json 
+output.logstash:
+  hosts: ["localhost:5044"]
